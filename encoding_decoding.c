@@ -1,74 +1,66 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdio.h>
+#include <math.h>
 #include <stdbool.h>
-#define LUNG 40
+#include <string.h>
+#define LUNG 100
 
-void chiediStringa(char s[]){
-    printf("Inserisci la stringa (non inserire numeri)...");
-    fflush(stdin);
-    scanf("%s", s);
-    return;
-}
+/*
+Author: Moldoveanu Davide
+Date: 15-09-2020
+Text:encoding e decoding
+ES:
+*/
 
-void encoding(char s[], char s2[], int n){   
-    int cont = 0;
-
-    for(int k = 0; s[k] != '\0'; k++){
-        if(s[k + 1] == s[k]){
-            cont++;
+void encoding(char f[]){
+    int cnt=1;  //parto da 1 perché se no la salto
+    printf("Inserisci una frase per poi fare il encoding: ");
+    scanf("%s",f);      //inserisco la frase
+    for(int k=0;k<strlen(f);k++){       //ciclo il for finchè non finiscono i caratteri inseriti da me
+        if(f[k]==f[k+1]){       //controllo se ci sono più di un carattere uguale
+            cnt++;              //incremento quanti caratteri uguali adiacenti ci sono
         }else{
-            strcpy(s, s2);
-            cont = 0;
-        }
-        s2[k] = '\0';
-    }
-    return;
-}
-
-bool isCarattere(char str[], int i){
-    return (str);
-}
-
-void decoding(char s[], int n){
-    int cont = 0;
-
-    for(int k = 0; s[k] != 0; k++){
-        if(isCarattere(s[], k) == true){
-            scanf("%c", s[k]);
-        }else{
-            scanf("%d", cont);
+            if(cnt!=1){         //se è diverso da 1 stampo il numero di volte che c'è quel carattere, se no stampo il carattere singolo
+                printf("%d%c",cnt,f[k]);
+                cnt=1;
+            }else{
+                printf("%c",f[k]);
+                cnt=1;
+            }
         }
     }
-
 }
 
-void main(){
-    int scelta;
-    char str[LUNG];
-    char str2[LUNG];
-
-    chiediStringa(str);
-
-    printf("MENU':\n0 --> Esci\n1 --> Encoding\n2 --> Deconding\nLa tua scelta...");
-    scanf("%d", &scelta);
-
-    do{
-        switch (scelta){
-            case 0:
-                break;
-            case 1:
-                encoding(str, str2, LUNG);
-                printf("%s", str2);
-                break;
-            case 2:
-                decoding(str, LUNG);
-                break;
-    
-            default:
-                break;
+void decoding(char f[]){
+    printf("Inserisci una frase per poi fare il decoding: ");
+    scanf("%s",f);      //inserisco la frase
+    int car=0;          //uso una variabile d'appoggio per stampare n volte il carattere, nella variabile inserirò il numero già convertito dall'ascii
+    for(int k=0;k<strlen(f);k++){   //ciclo il for finchè non finiscono i caratteri inseriti da me
+        if(f[k]>49 & f[k]<58){      //veerifico che sia un numero
+            car=f[k]-48;            //transformo il numero letto in ascci in un numero uguale ma non in ascii
+            for(int j=1;j<car;j++){     //stampo il carattere n volte di quante volte indica il numero
+                printf("%c",f[k+1]);
+            }
+        }else{
+            printf("%c",f[k]);      //stampo solo una volta se non è un numero
         }
-    }while (scelta != 0);
-    
-    printf("Hai scelto di uscire.");
+    }
+}
+
+void main () {
+
+    char frase[LUNG];
+    int op=0;
+
+    printf("1 encoding\n2 decoding\n");     //chiedo se voglio fare il decoding o il encoding
+    scanf("%d",&op);
+    if(op==1){
+        encoding(frase);    //funzione encoding
+    }else{
+        decoding(frase);    //funzione decoding
+    }
+
+
+	printf("\nPremi INVIO per uscire.");
+	getch();
 }
